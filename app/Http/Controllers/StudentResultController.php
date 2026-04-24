@@ -10,11 +10,24 @@ use Illuminate\Http\Request;
 class StudentResultController extends Controller
 {
     /**
+     * Display the home page with a list of courses.
+     */
+    public function home()
+    {
+        $courses = Course::with('semester')->get();
+        return view('welcome', compact('courses'));
+    }
+
+    /**
      * Display the search page for a specific course.
      */
     public function index($course_id)
     {
-        $course = Course::findOrFail($course_id);
+        $course = Course::find($course_id);
+
+        if (!$course) {
+            return redirect()->route('home')->with('error', 'This course does not exist.');
+        }
         
         return view('results.search', compact('course'));
     }
@@ -24,11 +37,18 @@ class StudentResultController extends Controller
      */
     public function search(Request $request, $course_id)
     {
+        $course = Course::find($course_id);
+
+        if (!$course) {
+            return redirect()->route('home')->with('error', 'This course does not exist.');
+        }
+
         $request->validate([
             'university_id' => 'required|exists:students,university_id',
+        ], [
+            'university_id.exists' => 'No results found for this University ID.'
         ]);
 
-        $course = Course::findOrFail($course_id);
         $university_id = $request->input('university_id');
 
         // Fetch activities matching the student (via university_id) and the course

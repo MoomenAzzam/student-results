@@ -12,6 +12,22 @@
 </head>
 <body class="bg-slate-50 min-h-screen">
     <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Navigation & Error Alert -->
+        <div class="flex items-center justify-between mb-8">
+            <a href="{{ route('home') }}" class="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Courses
+            </a>
+        </div>
+
+        @if(session('error'))
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl shadow-sm">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <!-- Header -->
         <div class="text-center mb-10">
             <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">
@@ -84,14 +100,6 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr class="bg-slate-50/80 font-bold">
-                                    <td class="px-8 py-4 text-slate-900">Total / Average</td>
-                                    <td class="px-8 py-4 text-right text-indigo-600">
-                                        {{ number_format($results->avg('score'), 2) }}
-                                    </td>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
