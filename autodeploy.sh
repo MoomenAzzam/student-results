@@ -24,7 +24,6 @@ echo "Checking and updating system packages..."
 if [ -x "$(command -v apt-get)" ]; then
     sudo apt-get update -y && sudo apt-get upgrade -y
     sudo apt-get install -y git curl unzip build-essential php php-xml php-mbstring php-curl php-zip
-    sudo apt-get install --no-install-recommends nodejs npm
 elif [ -x "$(command -v dnf)" ]; then
     sudo dnf upgrade --refresh -y
     sudo dnf install -y git curl unzip @development-tools php php-xml php-mbstring php-curl php-zip nodejs
@@ -34,6 +33,7 @@ elif [ -x "$(command -v pacman)" ]; then
 else
     echo "Unknown package manager. Skipping OS package updates."
 fi
+
 
 # -------------------------------------------------------------
 # 3. Handle Composer (PHP Dependency Manager)
@@ -51,16 +51,13 @@ composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 # -------------------------------------------------------------
 # 4. Ensure Node & NPM Exist (For PM2 & Potential Frontends)
 # -------------------------------------------------------------
-if ! [ -x "$(command -v npm)" ]; then
-    echo "Node.js/NPM is missing. Installing Node.js LTS..."
-    if [ -x "$(command -v apt-get)" ]; then
-        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-        sudo apt-get install -y nodejs
-    elif [ -x "$(command -v dnf)" ]; then
-        curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo dnf -y install nodejs
-    elif [ -x "$(command -v pacman)" ]; then
-        sudo pacman -S --noconfirm nodejs npm
-    fi
+if [ -x "$(command -v apt-get)" ]; then
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+elif [ -x "$(command -v dnf)" ]; then
+    curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo dnf -y install nodejs
+elif [ -x "$(command -v pacman)" ]; then
+    sudo pacman -S --noconfirm nodejs npm
 fi
 
 # Compile frontend ONLY if package.json exists
