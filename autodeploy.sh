@@ -35,15 +35,7 @@ else
 fi
 
 # -------------------------------------------------------------
-# 3. Pull Latest Code Safely
-# -------------------------------------------------------------
-echo "Fetching latest code from Git..."
-# Ensure we don't get blocked by permissions or local untracked file conflicts
-git reset --hard origin/main
-git pull origin main
-
-# -------------------------------------------------------------
-# 4. Handle Composer (PHP Dependency Manager)
+# 3. Handle Composer (PHP Dependency Manager)
 # -------------------------------------------------------------
 if ! [ -x "$(command -v composer)" ]; then
     echo "Composer is missing. Installing globally..."
@@ -56,7 +48,7 @@ echo "Installing Composer dependencies..."
 composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # -------------------------------------------------------------
-# 5. Ensure Node & NPM Exist (For PM2 & Potential Frontends)
+# 4. Ensure Node & NPM Exist (For PM2 & Potential Frontends)
 # -------------------------------------------------------------
 if ! [ -x "$(command -v npm)" ]; then
     echo "Node.js/NPM is missing. Installing Node.js LTS..."
@@ -78,7 +70,7 @@ if [ -f "package.json" ]; then
 fi
 
 # -------------------------------------------------------------
-# 6. Laravel Optimization
+# 5. Laravel Optimization
 # -------------------------------------------------------------
 echo "Optimizing Laravel application..."
 chmod -R 775 storage bootstrap/cache
@@ -90,7 +82,7 @@ if [ -f "artisan" ]; then
 fi
 
 # -------------------------------------------------------------
-# 7. PM2 Dynamic Launch
+# 6. PM2 Dynamic Launch
 # -------------------------------------------------------------
 if ! [ -x "$(command -v pm2)" ]; then
     echo "PM2 is missing. Installing globally..."
