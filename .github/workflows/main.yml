@@ -24,4 +24,4 @@ jobs:
 
             chmod +x autodeploy.sh
 
-            ./deploy.sh
+            ./autodeploy.sh
