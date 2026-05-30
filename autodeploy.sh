@@ -23,13 +23,13 @@ cd "$PROJECT_PATH"
 echo "Checking and updating system packages..."
 if [ -x "$(command -v apt-get)" ]; then
     sudo apt-get update -y && sudo apt-get upgrade -y
-    sudo apt-get install -y git curl unzip build-essential php php-xml php-mbstring php-curl php-zip
+    sudo apt-get install -y git curl unzip build-essential php php-xml php-mbstring php-curl php-zip php-sqlite3 php-mysql
 elif [ -x "$(command -v dnf)" ]; then
     sudo dnf upgrade --refresh -y
-    sudo dnf install -y git curl unzip @development-tools php php-xml php-mbstring php-curl php-zip nodejs
+    sudo dnf install -y git curl unzip @development-tools php php-xml php-mbstring php-curl php-zip nodejs php-sqlite3 php-mysql
 elif [ -x "$(command -v pacman)" ]; then
     sudo pacman -Syu --noconfirm
-    sudo pacman -S --needed --noconfirm git curl unzip base-devel php nodejs
+    sudo pacman -S --needed --noconfirm git curl unzip base-devel php nodejs php-sqlite3 php-mysql
 else
     echo "Unknown package manager. Skipping OS package updates."
 fi
