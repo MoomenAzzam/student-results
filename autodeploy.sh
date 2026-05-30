@@ -26,7 +26,7 @@ if [ -x "$(command -v apt-get)" ]; then
     sudo apt-get install -y git curl unzip build-essential php php-xml php-mbstring php-curl php-zip php-sqlite3 php-mysql
 elif [ -x "$(command -v dnf)" ]; then
     sudo dnf upgrade --refresh -y
-    sudo dnf install -y git curl unzip gcc make binutils unzip php php-xml php-mbstring php-curl php-zip nodejs php-sqlite3 php-mysql
+    sudo dnf install -y git curl unzip gcc make binutils unzip php php-xml php-mbstring php-curl php-zip nodejs php-sqlite3 php-mysqlnd
 elif [ -x "$(command -v pacman)" ]; then
     sudo pacman -Syu --noconfirm
     sudo pacman -S --needed --noconfirm git curl unzip base-devel php nodejs php-sqlite3 php-mysql
