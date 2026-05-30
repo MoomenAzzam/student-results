@@ -45,6 +45,7 @@ if ! [ -x "$(command -v composer)" ]; then
 fi
 
 echo "Installing Composer dependencies..."
+composer update --no-interaction
 composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # -------------------------------------------------------------
