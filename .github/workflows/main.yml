@@ -20,7 +20,6 @@ jobs:
           script: |
             echo "Searching for the project directory on the server..."
 
-            # Find the directory containing our deploy.sh script (skipping common system dirs to be fast)
             TARGET_DIR=$(find /home /var/www -name "deploy.sh" -not -path "*/node_modules/*" -not -path "*/vendor/*" -print -quit | xargs dirname)
 
             if [ -z "$TARGET_DIR" ]; then
