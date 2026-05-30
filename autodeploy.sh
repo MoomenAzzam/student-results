@@ -63,7 +63,7 @@ fi
 # Compile frontend ONLY if package.json exists
 if [ -f "package.json" ]; then
     echo "'package.json' found. Building frontend assets..."
-    npm ci
+    npm install
     npm run build
 fi
 
