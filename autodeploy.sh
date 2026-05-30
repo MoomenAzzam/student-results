@@ -23,10 +23,10 @@ cd "$PROJECT_PATH"
 echo "Checking and updating system packages..."
 if [ -x "$(command -v apt-get)" ]; then
     sudo apt-get update -y && sudo apt-get upgrade -y
-    sudo apt-get install -y git curl unzip build-essential php nodejs
+    sudo apt-get install -y git curl unzip build-essential php php-xml php-mbstring php-curl php-zip nodejs
 elif [ -x "$(command -v dnf)" ]; then
     sudo dnf upgrade --refresh -y
-    sudo dnf install -y git curl unzip @development-tools php nodejs
+    sudo dnf install -y git curl unzip @development-tools php php-xml php-mbstring php-curl php-zip nodejs
 elif [ -x "$(command -v pacman)" ]; then
     sudo pacman -Syu --noconfirm
     sudo pacman -S --needed --noconfirm git curl unzip base-devel php nodejs
@@ -45,7 +45,6 @@ if ! [ -x "$(command -v composer)" ]; then
 fi
 
 echo "Installing Composer dependencies..."
-composer update --no-interaction
 composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # -------------------------------------------------------------
