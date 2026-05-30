@@ -2,7 +2,7 @@ name: Production Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   deploy:
@@ -19,19 +19,19 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Searching for the project directory on the server..."
-            
+
             # Find the directory containing our deploy.sh script (skipping common system dirs to be fast)
             TARGET_DIR=$(find /home /var/www -name "deploy.sh" -not -path "*/node_modules/*" -not -path "*/vendor/*" -print -quit | xargs dirname)
-            
+
             if [ -z "$TARGET_DIR" ]; then
               echo "Error: Could not locate a directory containing 'deploy.sh' on the server."
               echo "Please ensure the project is cloned somewhere under /home or /var/www first."
               exit 1
             fi
-            
+
             echo "Found project directory at: $TARGET_DIR"
             cd "$TARGET_DIR"
-            
+
             # Make sure it's executable and run it
             chmod +x deploy.sh
             ./deploy.sh
