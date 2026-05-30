@@ -59,6 +59,46 @@ elif [ -x "$(command -v dnf)" ]; then
 elif [ -x "$(command -v pacman)" ]; then
     sudo pacman -S --noconfirm nodejs npm
 fi
+NEED_NODE_INSTALL=false
+
+if ! [ -x "$(command -v node)" ]; then
+    NEED_NODE_INSTALL=true
+else
+    CURRENT_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
+
+    if [ "$CURRENT_VERSION" -lt 20 ]; then
+        echo "⚠️ Found outdated Node.js version $(node -v). Version 20 or newer is required."
+        echo "Purging old Node.js version to prevent conflicts..."
+
+        if [ -x "$(command -v apt-get)" ]; then sudo apt-get remove -y nodejs npm || true; fi
+        if [ -x "$(command -v dnf)" ]; then sudo dnf remove -y nodejs || true; fi
+
+        NEED_NODE_INSTALL=true
+    fi
+fi
+
+if [ "$NEED_NODE_INSTALL" = true ]; then
+    echo "📦 Setting up NodeSource repository and installing Node.js v20 LTS..."
+    if [ -x "$(command -v apt-get)" ]; then
+        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+    elif [ -x "$(command -v dnf)" ]; then
+        curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+        sudo dnf install -y nodejs
+    elif [ -x "$(command -v pacman)" ]; then
+        sudo pacman -S --noconfirm nodejs npm
+    fi
+    echo "✅ Node.js $(node -v) installed successfully!"
+else
+    echo "✅ Node.js $(node -v) is already installed and meets requirements."
+fi
+
+# Compile frontend ONLY if package.json exists
+if [ -f "package.json" ]; then
+    echo "'package.json' found. Building frontend assets..."
+    npm ci
+    npm run build
+fi
 
 # Compile frontend ONLY if package.json exists
 if [ -f "package.json" ]; then
